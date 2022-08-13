@@ -1,0 +1,106 @@
+{
+  "name": "@stefanprobst/netlify-cms-oauth-client",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "format": "prettier . --cache --check --ignore-path .gitignore",
+    "format:fix": "pnpm run format --write",
+    "lint": "eslint . --cache --ignore-path .gitignore",
+    "lint:fix": "pnpm run lint --fix",
+    "prepare": "simple-git-hooks || exit 0",
+    "prepublishOnly": "run-s validate clean build",
+    "typecheck": "tsc --noEmit",
+    "validate": "run-s format lint typecheck"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
+  "dependencies": {
+    "@stefanprobst/is-absolute-url": "^1.0.2",
+    "@stefanprobst/is-nonempty-string": "^1.0.1",
+    "@stefanprobst/request": "^0.1.11",
+    "node-fetch": "^3.2.10",
+    "strip-indent": "^4.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@stefanprobst/commitlint-config": "^1.0.2",
+    "@stefanprobst/prettier-config": "^2.0.2",
+    "@types/node": "^18.7.2",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "@vercel/node": "^2.5.7",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.4.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "lint-staged": "^13.0.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "simple-git-hooks": "^2.8.0",
+    "typescript": "4.8.1-rc"
+  },
+  "commitlint": {
+    "extends": "@stefanprobst/commitlint-config"
+  },
+  "eslintConfig": {
+    "root": true,
+    "reportUnusedDisableDirectives": true,
+    "extends": [
+      "eslint:recommended",
+      "plugin:node/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/recommended",
+      "plugin:import/typescript",
+      "prettier"
+    ],
+    "plugins": [
+      "simple-import-sort"
+    ],
+    "rules": {
+      "import/first": "error",
+      "import/newline-after-import": "error",
+      "import/no-duplicates": "error",
+      "node/no-missing-import": "off",
+      "node/no-unpublished-import": "off",
+      "simple-import-sort/exports": "error",
+      "simple-import-sort/imports": "error"
+    },
+    "settings": {
+      "import/parsers": {
+        "@typescript-eslint/parser": [
+          ".ts"
+        ]
+      },
+      "import/resolver": {
+        "typescript": {
+          "alwaysTryTypes": true
+        }
+      }
+    }
+  },
+  "lint-staged": {
+    "*.@(js|ts)": [
+      "eslint --cache --fix",
+      "prettier --cache --write"
+    ],
+    "*.@(json|md|yml|yaml)": "prettier --cache --write"
+  },
+  "prettier": "@stefanprobst/prettier-config",
+  "simple-git-hooks": {
+    "commit-msg": "pnpx commitlint --edit",
+    "pre-commit": "pnpx lint-staged",
+    "pre-push": "pnpm run validate"
+  }
+}
