@@ -1,1 +1,1 @@
-export { authorize, callback } from './handlers'
+export { authorize, callback } from './handlers.js'

@@ -1,4 +1,4 @@
-# ``
+# `netlify-cms-oauth-client`
 
 ## How to install
 
@@ -8,9 +8,12 @@ npm i @stefanprobst/netlify-cms-oauth-client
 
 ## How to configure
 
-The following example assumes a website deployed at `https://example.com`, with the API routes for the OAuth flow at `/api/oauth/authorize` and `/api/oauth/callback`.
+The following example assumes a website deployed at `https://example.com`, with the API routes for
+the OAuth flow at `/api/oauth/authorize` and `/api/oauth/callback`.
 
-(i) Create a new OAuth app on [GitHub](https://github.com/settings/applications/new) to get a "Client ID" and "Client secret". Set the "Authorization callback URL" to `https://example.com/api/oauth/callback`.
+(i) Create a new OAuth app on [GitHub](https://github.com/settings/applications/new) to get a
+"Client ID" and "Client secret". Set the "Authorization callback URL" to
+`https://example.com/api/oauth/callback`.
 
 (ii) Add configuration to NetlifyCMS, and set environment variables.
 
