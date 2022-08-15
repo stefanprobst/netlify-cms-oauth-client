@@ -54,7 +54,8 @@ export function createClient() {
 
   const config = configs[provider]
 
-  function createAuthorizationUrl(scope = config.scope): URL {
+  function createAuthorizationUrl(_scope?: string | null): URL {
+    const scope = _scope ?? config.scope
     const url = new URL(config.authorizationPathname, config.baseUrl)
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     url.searchParams.set('client_id', clientId!)

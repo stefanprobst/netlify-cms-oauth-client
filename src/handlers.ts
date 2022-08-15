@@ -2,33 +2,29 @@ import '@stefanprobst/request/fetch'
 
 import { isNonEmptyString } from '@stefanprobst/is-nonempty-string'
 import { HttpError, request as get } from '@stefanprobst/request'
-import type { VercelRequest, VercelResponse } from '@vercel/node'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 
 import { createClient } from './client.js'
 import { createErrorPage, createSuccesPage } from './pages.js'
+import { getRequestUrl, html, json, redirect } from './utils.js'
 
 const client = createClient()
 
-export async function authorize(
-  request: VercelRequest,
-  response: VercelResponse,
-): Promise<unknown> {
-  const { scope } = request.query
-
-  if (Array.isArray(scope)) {
-    return response.status(400).json({ message: 'Invalid OAuth scope.' })
-  }
+export async function authorize(request: IncomingMessage, response: ServerResponse): Promise<void> {
+  const url = getRequestUrl(request)
+  const scope = url.searchParams.get('scope')
 
   const authorizationUrl = client.createAuthorizationUrl(scope)
 
-  return response.redirect(String(authorizationUrl))
+  return redirect(response, authorizationUrl)
 }
 
-export async function callback(request: VercelRequest, response: VercelResponse): Promise<unknown> {
-  const { code } = request.query
+export async function callback(request: IncomingMessage, response: ServerResponse): Promise<void> {
+  const url = getRequestUrl(request)
+  const code = url.searchParams.get('code')
 
   if (!isNonEmptyString(code)) {
-    return response.status(400).json({ message: 'Invalid authorization code.' })
+    return json(response, { message: 'Invalid authorization code.' }, 400)
   }
 
   const tokenUrl = client.createTokenUrl(code)
@@ -38,23 +34,22 @@ export async function callback(request: VercelRequest, response: VercelResponse)
     const token = client.getAccessToken(data)
 
     if (token.status === 'error') {
-      const html = createErrorPage(token)
-
-      return response.setHeader('content-type', 'text/html').send(html)
+      return html(response, createErrorPage(token))
     }
 
-    const html = createSuccesPage({
-      allowedOrigin: client.allowedOrigin,
-      provider: client.provider,
-      token: token.token,
-    })
-
-    return response.setHeader('content-type', 'text/html').send(html)
+    return html(
+      response,
+      createSuccesPage({
+        allowedOrigin: client.allowedOrigin,
+        provider: client.provider,
+        token: token.token,
+      }),
+    )
   } catch (error) {
     if (error instanceof HttpError) {
-      return response.status(error.response.status).json({ message: error.message })
+      return json(response, { message: error.message }, error.response.status)
     }
 
-    return response.status(500).json({ message: String(error) })
+    return json(response, { message: String(error) }, 500)
   }
 }
