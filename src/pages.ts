@@ -1,24 +1,24 @@
-import stripIndent from 'strip-indent'
+import stripIndent from "strip-indent";
 
-import type { createClient } from './client.js'
+import { type createClient } from "./client.js";
 
-type Client = ReturnType<typeof createClient>
+type Client = ReturnType<typeof createClient>;
 
 export function createSuccesPage(args: {
-  allowedOrigin: Client['allowedOrigin']
-  provider: Client['provider']
-  token: string
+	allowedOrigin: Client["allowedOrigin"];
+	provider: Client["provider"];
+	token: string;
 }): string {
-  const { allowedOrigin, provider, token } = args
+	const { allowedOrigin, provider, token } = args;
 
-  const origin = new URL(allowedOrigin).origin
-  const success = JSON.stringify({ token, provider })
+	const origin = new URL(allowedOrigin).origin;
+	const success = JSON.stringify({ token, provider });
 
-  const title = 'Signing in to CMS...'
-  const message = title
-  const missingParent = 'Cannot find parent window which opened this popup.'
+	const title = "Signing in to CMS...";
+	const message = title;
+	const missingParent = "Cannot find parent window which opened this popup.";
 
-  return stripIndent(`
+	return stripIndent(`
     <!doctype html>
     <html lang="en">
     <head>
@@ -67,19 +67,19 @@ export function createSuccesPage(args: {
       </script>
     </body>
     </html>
-  `)
+  `);
 }
 
 export function createErrorPage(error?: { message: string; url: string }): string {
-  const title = 'Failed to sign in to CMS'
-  let message = title
+	const title = "Failed to sign in to CMS";
+	let message = title;
 
-  if (error) {
-    message =
-      title + `. <a href="${error.url}" rel="noreferrer" target="_blank">${error.message}</a>`
-  }
+	if (error) {
+		message =
+			title + `. <a href="${error.url}" rel="noreferrer" target="_blank">${error.message}</a>`;
+	}
 
-  return stripIndent(`
+	return stripIndent(`
     <!doctype html>
     <html lang="en">
     <head>
@@ -110,5 +110,5 @@ export function createErrorPage(error?: { message: string; url: string }): strin
       </main>
     </body>
     </html>
-  `)
+  `);
 }

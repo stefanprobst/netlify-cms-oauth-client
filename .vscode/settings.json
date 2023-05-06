@@ -1,16 +1,16 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.rulers": [100],
-  "eslint.enable": true,
-  "eslint.runtime": "node",
-  "eslint.validate": ["javascript", "typescript"],
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "[markdown]": {
-    "editor.wordWrap": "on"
-  }
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.rulers": [100],
+	"eslint.enable": true,
+	"eslint.runtime": "node",
+	"eslint.validate": ["javascript", "typescript"],
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"[markdown]": {
+		"editor.wordWrap": "on"
+	}
 }
