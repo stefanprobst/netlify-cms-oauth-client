@@ -1,1 +1,1 @@
-export { authorize, callback } from "./handlers.js";
+export { createHandlers } from "./handlers.js";

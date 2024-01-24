@@ -1,7 +1,6 @@
 import assert from "node:assert";
 
-import { isAbsoluteUrl } from "@stefanprobst/is-absolute-url";
-import { isNonEmptyString } from "@stefanprobst/is-nonempty-string";
+import { isNonEmptyString, isUrl as isAbsoluteUrl } from "@stefanprobst/lib";
 
 type GitHubTokenResponseData =
 	| { access_token: string; scope: string; token_type: string }
@@ -62,9 +61,9 @@ export function createClient() {
 	function createAuthorizationUrl(_scope?: string | null): URL {
 		const scope = _scope ?? config.scope;
 		const url = new URL(config.authorizationPathname, config.baseUrl);
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
 		url.searchParams.set("client_id", clientId!);
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
 		url.searchParams.set("redirect_uri", redirectUrl!);
 		url.searchParams.set("scope", scope);
 		return url;
@@ -72,9 +71,9 @@ export function createClient() {
 
 	function createTokenUrl(authorizationCode: string): URL {
 		const url = new URL(config.tokenPathname, config.baseUrl);
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
 		url.searchParams.set("client_id", clientId!);
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
 		url.searchParams.set("client_secret", clientSecret!);
 		url.searchParams.set("code", authorizationCode);
 		return url;
@@ -84,6 +83,7 @@ export function createClient() {
 		allowedOrigin,
 		createAuthorizationUrl,
 		createTokenUrl,
+		// eslint-disable-next-line @typescript-eslint/unbound-method
 		getAccessToken: config.getAccessToken,
 		provider,
 	};

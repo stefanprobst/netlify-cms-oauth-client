@@ -6,6 +6,18 @@
 npm i @stefanprobst/netlify-cms-oauth-client
 ```
 
+## How to set up
+
+```ts
+import { createHandlers } from "@stefanprobst/netlify-cms-oauth-client";
+
+const handlers = createHandlers();
+```
+
+Then, use `handlers.authorize` and `handlers.callback` as request handlers for the
+`/api/oauth/authorize` and `/api/oauth/callback` API routes. How exactly to do this will depend on
+the framework you are using.
+
 ## How to configure
 
 The following example assumes a website deployed at `https://example.com`, with the API routes for

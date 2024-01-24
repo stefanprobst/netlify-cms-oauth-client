@@ -1,7 +1,6 @@
 import { type IncomingMessage, type ServerResponse } from "node:http";
 
 export function getRequestUrl(request: IncomingMessage): URL {
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	return new URL(request.url!, `https://${request.headers.host}`);
 }
 
