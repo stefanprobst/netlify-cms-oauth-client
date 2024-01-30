@@ -6,7 +6,6 @@ import { createClient } from "./client.js";
 import { createErrorPage, createSuccesPage } from "./pages.js";
 import { getRequestUrl, html, json, redirect } from "./utils.js";
 
-
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function authorize(request: IncomingMessage, response: ServerResponse): Promise<void> {
 	const client = createClient();
